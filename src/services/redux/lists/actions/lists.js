@@ -1,77 +1,78 @@
-var mockedLists = [
-    {
-        id: 1000,
-        listName: 'Food',
-        items: [
-            { id: 1, listId: 1000, name: 'Cereal', date: new Date() },
-            { id: 2, listId: 1000, name: 'Milk', date: new Date('11/12/2019') },
-            { id: 3, listId: 1000, name: 'Rice', date: new Date('11/11/2019') },
-            { id: 4, listId: 1000, name: 'Meal', date: new Date('12/30/2018') },
-        ]
-    },
-    {
-        id: 2000,
-        listName: 'Animals',
-        items: [
-            { id: 11, listId: 2000, name: 'Dog', date: new Date() },
-            { id: 12, listId: 2000, name: 'Cat', date: new Date('11/12/2019') },
-            { id: 13, listId: 2000, name: 'Mouse', date: new Date('11/11/2019') },
-            { id: 14, listId: 2000, name: 'Elephant', date: new Date('12/30/2018') },
-        ]
-    },
-    {
-        id: 3000,
-        listName: 'Beverages',
-        items: [
-            { id: 21, listId: 3000, name: 'Soda', date: new Date() },
-            { id: 22, listId: 3000, name: 'Water', date: new Date('11/12/2019') },
-            { id: 23, listId: 3000, name: 'Coffee', date: new Date('11/11/2019') },
-            { id: 24, listId: 3000, name: 'Tea', date: new Date('12/30/2018') },
-        ]
-    }
-]
+const url = `http://localhost:3001/api/`
 
 export const getLists = () => {
     return async dispatch => {
-        setTimeout(() => {
+        try {
+            const r = await fetch(url + 'lists/')
+            const data = await r.json()
             dispatch({
                 type: 'GET_LISTS',
-                payload: mockedLists
+                payload: data.data
             })
-        }, 0)
+        } catch (e) {
+
+        }
     }
 }
 
 export const addList = (listName) => {
     return async dispatch => {
-        // Simulating network request
-        setTimeout(() => {
+        try {
+            const r = await fetch(url + 'lists/', {
+                method: 'POST',
+                body: JSON.stringify({'name': listName}),
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            })
+            const data = await r.json()
             dispatch({
                 type: 'ADD_LIST',
                 payload: {
-                    id: Math.round(Math.random() * 1000),
-                    listName,
+                    _id: data.data._id,
+                    name: data.data.name,
                     items: []
                 }
             })
-        }, 0)
+        } catch (e) {
+        }
     }
 }
 
 export const removeList = (listId) => {
     return async dispatch => {
-        setTimeout(() => {
+        try {
+            const r = await fetch(url + 'lists/', {
+                method: 'DELETE',
+                body: JSON.stringify({'listId': listId}),
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            })
+            const data = await r.json()
             dispatch({
                 type: 'REMOVE_LIST',
                 payload: listId
             })
-        }, 0)
+        } catch (e) {
+        }
     }
 }
 
 export const editListName = (listId, listName) => {
     return async dispatch => {
-        setTimeout(() => {
+        try {
+            const r = await fetch(url + 'lists/', {
+                method: 'PUT',
+                body: JSON.stringify({
+                    'listId': listId,
+                    'name': listName
+                }),
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            })
+            const data = await r.json()
             dispatch({
                 type: 'EDIT_LIST',
                 payload: {
@@ -79,52 +80,93 @@ export const editListName = (listId, listName) => {
                     listName
                 }
             })
-        }, 50)
+        } catch (e) {
+        }
     }
 }
 
 export const addItem = (listId, itemName) => {
     return async dispatch => {
-        setTimeout(() => {
+        const date = new Date()
+        try {
+            const r = await fetch(url + 'items/', {
+                method: 'POST',
+                body: JSON.stringify({
+                    'listId': listId,
+                    'name': itemName,
+                    'date': date
+                }),
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            })
+            const data = await r.json()
             dispatch({
                 type: 'ADD_ITEM',
                 payload: {
-                    id: Math.round(Math.random() * 1000),
-                    listId,
+                    _id: data.data._id,
                     name: itemName,
-                    date: new Date()
+                    listId,
+                    date
                 }
             })
-        }, 0)
+        } catch (e) {
+        }
     }
 }
 
 export const editItem = (id, listId, itemName) => {
     return async dispatch => {
-        setTimeout(() => {
+        const date = new Date()
+
+        try {
+            const r = await fetch(url + 'items/', {
+                method: 'PUT',
+                body: JSON.stringify({
+                    'itemId': id,
+                    'name': itemName,
+                    'date': date
+                }),
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            })
+            const data = await r.json()
             dispatch({
                 type: 'EDIT_ITEM',
                 payload: {
-                    id,
-                    listId,
+                    _id: data.data._id,
                     itemName,
-                    date: new Date()
+                    listId,
+                    date
                 }
             })
-        }, 0)
+        } catch (e) {
+        }
     }
 }
 
 export const removeItem = (id, listId) => {
     return async dispatch => {
-        setTimeout(() => {
+        try {
+            const r = await fetch(url + 'items/', {
+                method: 'DELETE',
+                body: JSON.stringify({
+                    'itemId': id
+                }),
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            })
+            const data = await r.json()
             dispatch({
                 type: 'REMOVE_ITEM',
                 payload: {
-                    id,
+                    _id: id,
                     listId
                 }
             })
-        }, 0)
+        } catch (e) {
+        }
     }
 }

@@ -25,7 +25,7 @@ const CListItem = (props) => {
     let { item, onRemoveItem, onEditItem } = props
     return (
         <div>
-            <ListItem key={item.id}
+            <ListItem key={item._id}
                       className={css(aphroditeStyle.listItem)}
             >
                 <ListItemIcon>
@@ -42,7 +42,7 @@ const CListItem = (props) => {
                 </span>
                 &nbsp;|&nbsp;
                 <span className={css(aphroditeStyle.listItemOption)}
-                      onClick={() => onRemoveItem(item.id)}
+                      onClick={() => onRemoveItem(item._id)}
                 >
                     Delete
                 </span>
@@ -58,7 +58,7 @@ CListItem.propTypes = {
 }
 
 CListItem.defaultProps = {
-    item: { id: 1, name: 'Taco', date: new Date() },
+    item: { _id: 1, name: 'Taco', date: new Date() },
     onRemoveItem: () => {},
     onEditItem: () => {}
 }

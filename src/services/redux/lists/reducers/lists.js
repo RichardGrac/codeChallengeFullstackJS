@@ -19,15 +19,15 @@ const listsReducer = (state = initialState, action) => {
         case 'REMOVE_LIST':
             return {
                 ...state,
-                lists: state.lists.filter(list => list.id !== action.payload)
+                lists: state.lists.filter(list => list._id !== action.payload)
             }
 
         case 'EDIT_LIST':
             return {
                 ...state,
                 lists: state.lists.map(list => {
-                    if (list.id === action.payload.listId) {
-                        list.listName = action.payload.listName
+                    if (list._id === action.payload.listId) {
+                        list.name = action.payload.listName
                     }
                     return list
                 })
@@ -37,7 +37,7 @@ const listsReducer = (state = initialState, action) => {
             return {
                 ...state,
                 lists: state.lists.map(list => {
-                    if (list.id === action.payload.listId) {
+                    if (list._id === action.payload.listId) {
                         list.items.push(action.payload)
                     }
                     return list
@@ -49,9 +49,9 @@ const listsReducer = (state = initialState, action) => {
             return {
                 ...state,
                 lists: state.lists.map(list => {
-                    if (list.id === action.payload.listId) {
+                    if (list._id === action.payload.listId) {
                         list.items = list.items.map(item => {
-                            if (item.id === action.payload.id) {
+                            if (item._id === action.payload._id) {
                                 item.name = action.payload.itemName
                                 item.date = action.payload.date
                             }
@@ -67,8 +67,8 @@ const listsReducer = (state = initialState, action) => {
             return {
                 ...state,
                 lists: state.lists.map(list => {
-                    if (list.id === action.payload.listId) {
-                        list.items = list.items.filter(item => item.id !== action.payload.id)
+                    if (list._id === action.payload.listId) {
+                        list.items = list.items.filter(item => item._id !== action.payload._id)
                     }
                     return list
                 })

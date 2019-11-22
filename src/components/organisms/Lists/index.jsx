@@ -17,7 +17,7 @@ const Lists = (props) => {
     if (props.lists && props.lists.length > 0) {
         listsContent = props.lists.map((list, i) => (
             <CList list={list}
-                   key={`CList-0${i}-${list.listName}-${new Date().getMilliseconds()}`}
+                   key={`CList-0${i}-${list.name}-${new Date().getMilliseconds()}`}
             />
         ))
     } else listsContent = (<h2 style={{color: 'white'}}>Loading...</h2>)

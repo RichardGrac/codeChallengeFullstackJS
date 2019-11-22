@@ -50,7 +50,7 @@ const useStyles = makeStyles(theme => ({
 }));
 
 const CList = (props) => {
-    const { id, listName, items } = props.list
+    const { _id, name, items } = props.list
     const classes = useStyles()
     const [modalProperties, setModalProperties] = useState({
         status: false, modalType: '', message: '', title: '', value: '', withTextField: true
@@ -80,7 +80,7 @@ const CList = (props) => {
                     withTextField = false
                 } else {
                     status = false
-                    props.removeList(id)
+                    props.removeList(_id)
                 }
                 break
 
@@ -101,28 +101,28 @@ const CList = (props) => {
 
         /* Validation just for Edit Item */
         if (mType.includes(`${variables.editItem}-`)) {
-            itemId = parseInt(mType.split('-')[1])
+            itemId = mType.split('-')[1]
             mType = mType.split('-')[0]
         }
 
         switch (mType) {
             case variables.addItem:
-                props.addItem(id, newListOrItemName)
+                props.addItem(_id, newListOrItemName)
                 onCloseModal()
                 break
 
             case variables.deleteList:
-                props.removeList(id)
+                props.removeList(_id)
                 onCloseModal()
                 break
 
             case variables.editList:
-                props.editListName(id, newListOrItemName)
+                props.editListName(_id, newListOrItemName)
                 onCloseModal()
                 break
 
             case variables.editItem:
-                props.editItem(itemId, id, newListOrItemName)
+                props.editItem(itemId, _id, newListOrItemName)
                 onCloseModal()
                 break
 
@@ -141,7 +141,7 @@ const CList = (props) => {
         })
     }
 
-    const onHandleRemoveItem = (itemId) => props.removeItem(itemId, id)
+    const onHandleRemoveItem = (itemId) => props.removeItem(itemId, _id)
 
     const itemsRender = () => {
         return items.length <= 0 ? (
@@ -154,7 +154,7 @@ const CList = (props) => {
                     <CListItem item={item}
                                key={i}
                                onRemoveItem={onHandleRemoveItem}
-                               onEditItem={() => onHandleEditItem(`${variables.editItem}-${item.id}`)}/>
+                               onEditItem={() => onHandleEditItem(`${variables.editItem}-${item._id}`)}/>
                 ))}
             </List>
         )
@@ -170,7 +170,7 @@ const CList = (props) => {
             <Grid item xs={12} md={6} className={classes.root}>
                 <Grid container item xs={12} id={'leftBand'} className={classes.title}>
                     <Typography variant='h6'>
-                        {listName}
+                        {name}
                     </Typography>
                     <div>
                         <IconButton iconColor={'action'}
@@ -204,21 +204,21 @@ const CList = (props) => {
 
 CList.propTypes = {
     list: PropTypes.shape({
-        id: PropTypes.number,
-        listName: PropTypes.string,
+        _id: PropTypes.number,
+        name: PropTypes.string,
         items: PropTypes.array,
     })
 }
 
 CList.defaultProps = {
     list: PropTypes.shape({
-        id: 1000,
-        listName: 'Food',
+        _id: 1000,
+        name: 'Food',
         items: [
-            { id: 1, name: 'Cereal', date: new Date() },
-            { id: 2, name: 'Milk', date: new Date('11/12/2019') },
-            { id: 3, name: 'Rice', date: new Date('11/11/2019') },
-            { id: 4, name: 'Meal', date: new Date('12/30/2018') },
+            { _id: 1, listId: 1000, name: 'Cereal', date: new Date() },
+            { _id: 2, listId: 1000, name: 'Milk', date: new Date('11/12/2019') },
+            { _id: 3, listId: 1000, name: 'Rice', date: new Date('11/11/2019') },
+            { _id: 4, listId: 1000, name: 'Meal', date: new Date('12/30/2018') },
         ]
     })
 }
