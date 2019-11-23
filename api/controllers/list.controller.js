@@ -1,6 +1,7 @@
 let List = require('../models/list.model')
 let Item = require('../models/item.model')
 const { map } = require('awaity')
+const getErrorMessage = require('../shared/index')
 
 exports.index = async (req, res) => {
     try {
@@ -11,77 +12,83 @@ exports.index = async (req, res) => {
         })
 
         res.status(200).json({
-            message: "Lists retrieved successfully",
+            message: 'Lists retrieved successfully',
             data: newLists
-        });
+        })
     } catch (e) {
-        res.status(500).json({
-            message: "Something went wrong while retrieving lists.",
-        });
+        res.status(500).json(getErrorMessage(' retrieving lists'))
     }
-};
+}
 
 exports.new = async (req, res) => {
-    const name = req.body.name
-    let NewList = new List();
-    NewList.name = name;
-
-    // save the list and check for errors
     try {
+        const name = req.body.name
+        let NewList = new List()
+        NewList.name = name
+
         const result = await NewList.save()
         res.status(200).json({
             message: 'New list saved',
             data: result
         })
     } catch (e){
-        res.status(500).json({
-            message: "Something went wrong while creating the list.",
-            eMessage: e.message
-        })
+        res.status(500).json(getErrorMessage('creating the list'))
     }
-};
+}
 
-// Handle view list info
 exports.view = function (req, res) {
-    List.findById(req.body.listId, function (err, list) {
-        if (err)
-            res.status(500).send(err);
-        res.status(200).json({
-            message: 'List information',
-            data: list
-        });
-    });
-};
-
-// Handle update list name
-exports.update = function (req, res) {
-    List.findById(req.body.listId, function (err, list) {
-        if (err)
-            res.status(500).send(err);
-        list.name = req.body.name ? req.body.name : list.name;
-
-        // save the list and check for errors
-        list.save(function (err) {
+    try {
+        List.findById(req.body.listId, function (err, list) {
             if (err)
-                res.status(500).json(err);
+                throw new Error('')
             res.status(200).json({
-                message: 'List name updated',
+                message: 'List information',
                 data: list
-            });
-        });
-    });
-};
+            })
+        })
+    } catch (e) {
+        res.status(500).json(getErrorMessage('retrieving the list information'))
+    }
+}
 
-// Handle delete list
+exports.update = function (req, res) {
+    try {
+        List.findById(req.body.listId, function (err, list) {
+            if (err)
+                throw new Error('')
+
+            list.name = req.body.name ? req.body.name : list.name
+
+            list.save(function (err) {
+                if (err)
+                    throw new Error('')
+
+                res.status(200).json({
+                    message: 'List name updated',
+                    data: list
+                })
+            })
+        })
+    } catch (e) {
+        res.status(500).json(getErrorMessage('updating the list information'))
+    }
+}
+
 exports.delete = function (req, res) {
-    List.remove({
-        _id: req.body.listId
-    }, function (err) {
-        if (err)
-            res.send(err);
-        res.json({
-            status: 'success',
-            message: 'List deleted'
-        });
-    });
-};
+    try {
+        List.remove({
+            _id: req.body.listId
+
+        }, function (err) {
+            if (err)
+                throw new Error('')
+
+            res.json({
+                status: 'success',
+                message: 'List deleted'
+            })
+        })
+    } catch (e) {
+        res.status(500).json(getErrorMessage('deleting the list'))
+    }
+}

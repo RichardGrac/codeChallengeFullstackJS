@@ -1,16 +1,27 @@
-const url = `http://localhost:3001/api/`
+const URL = `http://localhost:3001/api/`
+const NETWORK_MSG = 'please check your network connection'
 
 export const getLists = () => {
     return async dispatch => {
         try {
-            const r = await fetch(url + 'lists/')
+            const r = await fetch(URL + 'lists/')
             const data = await r.json()
+
+            if (r.status !== 200) throw new Error(`Server Error: ${data.message}`)
+
             dispatch({
                 type: 'GET_LISTS',
                 payload: data.data
             })
         } catch (e) {
-
+            dispatch({
+                type: 'SHOW_NOTIFICATION',
+                payload: {
+                    type: 'error',
+                    message: e.message || `Error fetching lists, ${NETWORK_MSG}`,
+                    status: true
+                }
+            })
         }
     }
 }
@@ -18,7 +29,7 @@ export const getLists = () => {
 export const addList = (listName) => {
     return async dispatch => {
         try {
-            const r = await fetch(url + 'lists/', {
+            const r = await fetch(URL + 'lists/', {
                 method: 'POST',
                 body: JSON.stringify({'name': listName}),
                 headers: {
@@ -26,6 +37,9 @@ export const addList = (listName) => {
                 }
             })
             const data = await r.json()
+
+            if (r.status !== 200) throw new Error(`Server Error: ${data.message}`)
+
             dispatch({
                 type: 'ADD_LIST',
                 payload: {
@@ -35,6 +49,14 @@ export const addList = (listName) => {
                 }
             })
         } catch (e) {
+            dispatch({
+                type: 'SHOW_NOTIFICATION',
+                payload: {
+                    type: 'error',
+                    message: e.message || `Error trying to add a new list, ${NETWORK_MSG}`,
+                    status: true
+                }
+            })
         }
     }
 }
@@ -42,7 +64,7 @@ export const addList = (listName) => {
 export const removeList = (listId) => {
     return async dispatch => {
         try {
-            const r = await fetch(url + 'lists/', {
+            const r = await fetch(URL + 'lists/', {
                 method: 'DELETE',
                 body: JSON.stringify({'listId': listId}),
                 headers: {
@@ -50,11 +72,22 @@ export const removeList = (listId) => {
                 }
             })
             const data = await r.json()
+
+            if (r.status !== 200) throw new Error(`Server Error: ${data.message}`)
+
             dispatch({
                 type: 'REMOVE_LIST',
                 payload: listId
             })
         } catch (e) {
+            dispatch({
+                type: 'SHOW_NOTIFICATION',
+                payload: {
+                    type: 'error',
+                    message: e.message || `Error trying to remove the list, ${NETWORK_MSG}`,
+                    status: true
+                }
+            })
         }
     }
 }
@@ -62,7 +95,7 @@ export const removeList = (listId) => {
 export const editListName = (listId, listName) => {
     return async dispatch => {
         try {
-            const r = await fetch(url + 'lists/', {
+            const r = await fetch(URL + 'lists/', {
                 method: 'PUT',
                 body: JSON.stringify({
                     'listId': listId,
@@ -73,6 +106,9 @@ export const editListName = (listId, listName) => {
                 }
             })
             const data = await r.json()
+
+            if (r.status !== 200) throw new Error(`Server Error: ${data.message}`)
+
             dispatch({
                 type: 'EDIT_LIST',
                 payload: {
@@ -81,6 +117,14 @@ export const editListName = (listId, listName) => {
                 }
             })
         } catch (e) {
+            dispatch({
+                type: 'SHOW_NOTIFICATION',
+                payload: {
+                    type: 'error',
+                    message: e.message || `Error trying to edit the list, ${NETWORK_MSG}`,
+                    status: true
+                }
+            })
         }
     }
 }
@@ -89,7 +133,7 @@ export const addItem = (listId, itemName) => {
     return async dispatch => {
         const date = new Date()
         try {
-            const r = await fetch(url + 'items/', {
+            const r = await fetch(URL + 'items/', {
                 method: 'POST',
                 body: JSON.stringify({
                     'listId': listId,
@@ -101,6 +145,9 @@ export const addItem = (listId, itemName) => {
                 }
             })
             const data = await r.json()
+
+            if (r.status !== 200) throw new Error(`Server Error: ${data.message}`)
+
             dispatch({
                 type: 'ADD_ITEM',
                 payload: {
@@ -111,6 +158,14 @@ export const addItem = (listId, itemName) => {
                 }
             })
         } catch (e) {
+            dispatch({
+                type: 'SHOW_NOTIFICATION',
+                payload: {
+                    type: 'error',
+                    message: e.message || `Error trying to add the item ${itemName}, ${NETWORK_MSG}`,
+                    status: true
+                }
+            })
         }
     }
 }
@@ -120,7 +175,7 @@ export const editItem = (id, listId, itemName) => {
         const date = new Date()
 
         try {
-            const r = await fetch(url + 'items/', {
+            const r = await fetch(URL + 'items/', {
                 method: 'PUT',
                 body: JSON.stringify({
                     'itemId': id,
@@ -132,6 +187,9 @@ export const editItem = (id, listId, itemName) => {
                 }
             })
             const data = await r.json()
+
+            if (r.status !== 200) throw new Error(`Server Error: ${data.message}`)
+
             dispatch({
                 type: 'EDIT_ITEM',
                 payload: {
@@ -142,6 +200,14 @@ export const editItem = (id, listId, itemName) => {
                 }
             })
         } catch (e) {
+            dispatch({
+                type: 'SHOW_NOTIFICATION',
+                payload: {
+                    type: 'error',
+                    message: e.message || `Error trying to edit the item, ${NETWORK_MSG}`,
+                    status: true
+                }
+            })
         }
     }
 }
@@ -149,7 +215,7 @@ export const editItem = (id, listId, itemName) => {
 export const removeItem = (id, listId) => {
     return async dispatch => {
         try {
-            const r = await fetch(url + 'items/', {
+            const r = await fetch(URL + 'items/', {
                 method: 'DELETE',
                 body: JSON.stringify({
                     'itemId': id
@@ -159,6 +225,9 @@ export const removeItem = (id, listId) => {
                 }
             })
             const data = await r.json()
+
+            if (r.status !== 200) throw new Error(`Server Error: ${data.message}`)
+
             dispatch({
                 type: 'REMOVE_ITEM',
                 payload: {
@@ -167,6 +236,14 @@ export const removeItem = (id, listId) => {
                 }
             })
         } catch (e) {
+            dispatch({
+                type: 'SHOW_NOTIFICATION',
+                payload: {
+                    type: 'error',
+                    message: e.message || `Error trying to remove the item, ${NETWORK_MSG}`,
+                    status: true
+                }
+            })
         }
     }
 }

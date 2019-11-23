@@ -1,5 +1,4 @@
 const mongoose = require('mongoose')
-
 const database = require('./index')
 
 mongoose.connect(database.url, {
