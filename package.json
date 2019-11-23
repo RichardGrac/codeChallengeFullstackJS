@@ -25,7 +25,7 @@
     "start": "react-scripts start",
     "start-backend": "nodemon api/index.js",
     "build": "react-scripts build",
-    "test": "react-scripts test",
+    "test": "jest --watch --testTimeout=10000",
     "eject": "react-scripts eject"
   },
   "eslintConfig": {
@@ -44,7 +44,9 @@
     ]
   },
   "devDependencies": {
+    "jest": "^24.9.0",
     "nodemon": "^2.0.0",
-    "redux-devtools-extension": "^2.13.8"
+    "redux-devtools-extension": "^2.13.8",
+    "supertest": "^4.0.2"
   }
 }
