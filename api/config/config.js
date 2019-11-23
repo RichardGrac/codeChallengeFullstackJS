@@ -2,12 +2,14 @@ const express = require('express')
 const apiRoutes = require('../routing/api-routes')
 const bodyParser = require('body-parser')
 const cors = require('cors')
+const cookieParser = require('cookie-parser')
 
 module.exports = app => {
     app.set('port', process.env.PORT || 3001)
 
     app.use(bodyParser.json({limit: '50mb'}))
     app.use(bodyParser.urlencoded({limit: '50mb', extended: true}))
+    app.use(cookieParser())
     app.use(express.json())
     app.use(cors())
 

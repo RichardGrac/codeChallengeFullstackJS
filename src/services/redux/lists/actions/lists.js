@@ -11,7 +11,10 @@ export const getLists = () => {
 
             dispatch({
                 type: 'GET_LISTS',
-                payload: data.data
+                payload: {
+                    lists: data.data,
+                    requestDone: true
+                }
             })
         } catch (e) {
             dispatch({
@@ -20,6 +23,13 @@ export const getLists = () => {
                     type: 'error',
                     message: e.message || `Error fetching lists, ${NETWORK_MSG}`,
                     status: true
+                }
+            })
+            dispatch({
+                type: 'GET_LISTS',
+                payload: {
+                    lists: [],
+                    requestDone: true
                 }
             })
         }

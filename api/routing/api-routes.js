@@ -2,6 +2,14 @@ let router = require('express').Router()
 let listController = require('../controllers/list.controller')
 let itemController = require('../controllers/item.controller')
 
+const authMiddleware = async (req, res, next) => {
+    const {cookies: {auth = null}} = req
+    if (auth) {
+        console.log(`Auth Cookie received, value: ${auth}`)
+        next()
+    } else res.status(401).send({message: 'Auth Failed'})
+}
+
 module.exports = app => {
     router.get('/lists', listController.index)
     router.post('/lists', listController.new)
@@ -17,5 +25,9 @@ module.exports = app => {
     router.put('/items', itemController.update)
     router.delete('/items', itemController.delete)
 
+    // Without cookie checking
     app.use('/api', router)
+
+    // To check for cookie in the request:
+    // app.use('/api', authMiddleware, router)
 }

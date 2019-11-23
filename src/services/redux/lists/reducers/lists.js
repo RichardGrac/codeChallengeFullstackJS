@@ -1,5 +1,6 @@
 const initialState = {
-    lists: []
+    lists: [],
+    requestDone: false
 }
 
 const listsReducer = (state = initialState, action) => {
@@ -7,7 +8,8 @@ const listsReducer = (state = initialState, action) => {
         case 'GET_LISTS':
             return {
                 ...state,
-                lists: action.payload
+                lists: action.payload.lists,
+                requestDone: action.payload.requestDone
             }
 
         case 'ADD_LIST':

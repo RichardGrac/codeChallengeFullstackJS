@@ -14,13 +14,25 @@ const Lists = (props) => {
     const { getLists } = props
 
     let listsContent
-    if (props.lists && props.lists.length > 0) {
+    if (!props.requestDone) {
+        listsContent = (
+            <Grid container xs={12} style={{ justifyContent: 'center' }}>
+                <h2 style={{color: 'white'}}>Loading...</h2>
+            </Grid>
+        )
+    } else if (props.lists && props.lists.length > 0) {
         listsContent = props.lists.map((list, i) => (
             <CList list={list}
                    key={`CList-0${i}-${list.name}-${new Date().getMilliseconds()}`}
             />
         ))
-    } else listsContent = (<h2 style={{color: 'white'}}>Loading...</h2>)
+    } else {
+        listsContent = (
+            <Grid container xs={12} style={{ justifyContent: 'center' }}>
+                <h2 style={{color: 'white'}}>Nothing to show</h2>
+            </Grid>
+        )
+    }
 
     return (
         <Grid container spacing={0}>
@@ -37,7 +49,8 @@ const mapDispatchToProps = dispatch => {
 
 const mapStateToProps = state => {
     return {
-        lists: state.listsReducer.lists
+        lists: state.listsReducer.lists,
+        requestDone: state.listsReducer.requestDone
     }
 }
 
