@@ -3,6 +3,7 @@ const apiRoutes = require('../routing/api-routes')
 const bodyParser = require('body-parser')
 const cors = require('cors')
 const cookieParser = require('cookie-parser')
+require('dotenv').config();
 
 module.exports = app => {
     app.set('port', process.env.PORT || 3001)

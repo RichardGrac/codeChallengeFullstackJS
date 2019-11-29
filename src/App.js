@@ -4,7 +4,7 @@ import {Provider} from 'react-redux'
 import { composeWithDevTools } from 'redux-devtools-extension/developmentOnly'
 import thunk from 'redux-thunk'
 import rootReducer from './services/redux'
-import { SnackbarProvider, useSnackbar } from 'notistack';
+import { SnackbarProvider } from 'notistack';
 
 import Layout from './hocs/Layout'
 import ListsScene from './scenes/ListsScene'

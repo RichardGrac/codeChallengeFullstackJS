@@ -1,4 +1,6 @@
-const URL = `http://localhost:3001/api/`
+const URI = process.env.NODE_ENV === 'production' ? process.env.REACT_APP_BACKEND_URL : process.env.REACT_APP_BACKEND_URL_DEV
+export const URL = `${URI}/api/`
+
 const NETWORK_MSG = 'please check your network connection'
 
 export const getLists = () => {

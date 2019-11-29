@@ -1,4 +1,7 @@
 let router = require('express').Router()
+const express = require('express')
+const path = require('path')
+
 let listController = require('../controllers/list.controller')
 let itemController = require('../controllers/item.controller')
 
@@ -27,6 +30,14 @@ module.exports = app => {
 
     // Without cookie checking
     app.use('/api', router)
+
+    if (process.env.NODE_ENV === 'production') {
+        app.use(express.static('build'))
+
+        app.get('*', (req, res) => {
+            res.sendFile(path.join(__dirname, '/../../', 'build/index.html'))
+        })
+    }
 
     // To check for cookie in the request:
     // app.use('/api', authMiddleware, router)
